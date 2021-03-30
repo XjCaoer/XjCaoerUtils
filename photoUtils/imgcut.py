@@ -83,14 +83,14 @@ def drawRect(img,pt1,pt2,pt3,pt4,color,lineWidth):
 #　读出文件中的坐标值
 def ReadTxt(directory,txtName, imageName):
     fileTxt = txtName  # txt文件名
-    getTxt = open(fileTxt, 'r', encoding='UTF-8')  # 打开txt文件
+    getTxt = open(directory+fileTxt, 'r', encoding='UTF-8')  # 打开txt文件
     lines = getTxt.readlines()
     length = len(lines)
-    imgSrc = cv2.imread(imageName)
+    imgSrc = cv2.imread(directory+imageName)
     
     result_file = []
     result_label = []
-    for i in range(0,length):
+    for i in range(0, length):
         items = lines[i].split(',')
         if items[9].strip() != '###':  # 此处过滤掉了###即未知命名图像的切割
                pt1 = [int(items[0]), int(items[1])]
@@ -98,9 +98,9 @@ def ReadTxt(directory,txtName, imageName):
                pt3 = [int(items[4]), int(items[5])]
                pt2 = [int(items[2]), int(items[3])]
                
-               imgRotation = rotate(imgSrc,pt1,pt2,pt3,pt4,str(i)+'_'+imageName)
+               imgRotation = rotate(imgSrc,pt1,pt2,pt3,pt4,directory+str(i)+'_'+imageName)
                if imgRotation.any():#过滤掉空图——未得到裁剪图像的图
-                      result_file.append(str(i)+'_'+imageName)
+                      result_file.append(directory+str(i)+'_'+imageName)
                       result_label.append(items[9].strip())
         
     return result_file, result_label
